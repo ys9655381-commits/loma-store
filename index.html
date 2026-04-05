@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="loma Studio - افضل متجر بيع بوتات ديسكورد في الوطن العربي بافضل جودة. نقدم حلول ديسكورد متميزة، بوتات مخصصة، إعداد سيرفرات احترافية. بإدارة مُسْلِمْ بخبرة تتجاوز 4 سنوات.">
+    <meta name="keywords" content="loma Studio, مُسْلِمْ, بوتات ديسكورد, افضل متجر بوتات ديسكورد">
+    <title>loma Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        :root {
+            --primary-dark: #080808;
+            --secondary-dark: #0f0f0f;
+            --tertiary-dark: #181818;
+            --card-dark: #141414;
+            --accent-green-dark: #2d4a2d;
+            --accent-green-medium: #3d6b3d;
+            --accent-green-light: #5a9e5a;
+            --accent-green-bright: #7ecf7e;
+            --accent-green-glow: rgba(94, 168, 94, 0.15);
+            --accent-metal-light: #f0f0f0;
+            --accent-metal-dark: #b0b0b0;
+            --accent-metal-gradient: linear-gradient(140deg, #f0f0f0, #c8c8c8, #e8e8e8);
+            --text-light: #ffffff;
+            --text-medium: #999999;
+            --text-dim: #555555;
+            --glow-soft: rgba(94, 158, 94, 0.12);
+            --glow-medium: rgba(94, 158, 94, 0.25);
+            --glow-strong: rgba(94, 158, 94, 0.45);
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-green: rgba(94, 158, 94, 0.3);
+            --font-primary: 'Cairo', sans-serif;
+            --font-logo: 'Poppins', sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            --radius-round: 50%;
+            --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            --z-back: -1;
+            --z-base: 1;
+            --z-content: 10;
+            --z-nav: 100;
+            --z-modal: 1000;
+            --z-loading: 9999;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background: var(--primary-dark);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--text-medium);
+            background: var(--primary-dark);
+            line-height: 1.9;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== PARTICLE CANVAS ===== */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* ===== CURSOR ===== */
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green-bright);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+            mix-blend-mode: screen;
+        }
+        .cursor-follower {
+            width: 35px;
+            height: 35px;
+            border: 1.5px solid var(--accent-green-light);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), width 0.3s, height 0.3s, opacity 0.3s;
+            opacity: 0.6;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--secondary-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-green-dark); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-green-medium); }
+
+        /* ===== LOADING SCREEN ===== */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--primary-dark);
+            z-index: var(--z-loading);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transition: opacity 0.9s ease, visibility 0.9s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loading-logo-wrap {
+            direction: ltr;
+            display: flex;
+            align-items: baseline;
+            animation: loadPulse 2s ease-in-out infinite;
+        }
+        .loading-logo-wrap img { height: 6rem; margin-right: -14px; filter: drop-shadow(0 0 20px var(--glow-medium)); }
+        .loading-logo-wrap span {
+            font-family: var(--font-logo);
+            font-size: 6rem;
+            font-weight: 900;
+            background: var(--accent-metal-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .loading-bar-wrap {
+            width: 260px;
+            height: 3px;
+            background: var(--tertiary-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green-dark), var(--accent-green-bright));
+            border-radius: 3px;
+            animation: loadBar 1.6s ease-in-out forwards;
+        }
+        .loading-text {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+        @keyframes loadBar { from { width: 0% } to { width: 100% } }
+        @keyframes loadPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.05); }
+        }
+
+        /* ===== HEADER ===== */
+        .main-header {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: var(--z-nav);
+            padding: 1.2rem 0;
+            transition: all var(--transition-normal);
+        }
+        .main-header.scrolled {
+            background: rgba(8, 8, 8, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .header-logo {
+            display: flex;
+            align-items: baseline;
+            text-decoration: none;
+            direction: ltr;
+            position: relative;
+        }
+        .header-logo img { height: 3rem; margin-right: -8px; transition: transform var(--transition-normal); }
+        .header-logo span {
+            font-family: var(--font-logo);
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--accent-metal-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .header-logo:hover img { transform: scale(1.1) rotate(-5deg); }
+        .header-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-green-light), transparent);
+            transform: scaleX(0);
+            transition: transform var(--transition-normal);
+        }
+        .header-logo:hover::after { transform: scaleX(1); }
+
+        .main-nav ul { display: flex; gap: 2.5rem; list-style: none; }
+        .main-nav a {
+            color: var(--text-medium);
+            font-weight: 700;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.4rem 0;
+            transition: color var(--transition-fast);
+        }
+        .main-nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 0; height: 2px;
+            background: var(--accent-green-light);
+            border-radius: 2px;
+            transition: width var(--transition-normal);
+        }
+        .main-nav a:hover, .main-nav a.active { color: var(--text-light); }
+        .main-nav a:hover::before, .main-nav a.active::before { width: 100%; }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent-green-dark), var(--accent-green-medium));
+            color: #fff !important;
+            padding: 0.5rem 1.4rem !important;
+            border-radius: 50px;
+            border: 1px solid var(--accent-green-light) !important;
+            transition: all var(--transition-fast) !important;
+            box-shadow: 0 4px 15px var(--glow-soft);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--glow-medium) !important; }
+        .nav-cta::before { display: none !important; }
+
+        .mobile-nav-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: calc(var(--z-nav) + 1);
+            padding: 8px;
+        }
+
+        /* ===== MOBILE NAV ===== */
+        .mobile-nav {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 85%;
+            max-width: 340px;
+            height: 100vh;
+            background: var(--secondary-dark);
+            z-index: calc(var(--z-nav) - 1);
+            padding: 6rem 2rem 2rem;
+            transition: right var(--transition-slow);
+            border-left: 1px solid var(--border-green);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+        .mobile-nav a {
+            display: block;
+            color: var(--text-medium);
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.9rem 1.2rem;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+        .mobile-nav a:hover, .mobile-nav a.active {
+            color: var(--text-light);
+            background: rgba(94,158,94,0.12);
+            padding-right: 1.6rem;
+        }
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: calc(var(--z-nav) - 2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+            backdrop-filter: blur(4px);
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== SECTION HELPERS ===== */
+        .section-padding { padding: 7rem 0; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-title h2 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 900;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .section-title p {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 2;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--accent-green-bright);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding: 0.4rem 1rem;
+            background: rgba(94,158,94,0.08);
+            border: 1px solid rgba(94,158,94,0.2);
+            border-radius: 50px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9em 2.2em;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            font-family: var(--font-primary);
+            text-decoration: none;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+        .btn:hover::after { opacity: 1; }
+        .btn i { font-size: 1.1em; line-height: 1; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-green-dark), var(--accent-green-medium));
+            color: #fff;
+            box-shadow: 0 6px 25px var(--glow-medium);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 35px var(--glow-strong);
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-light));
+            color: #fff;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border-color: var(--border-green);
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover {
+            background: rgba(94,158,94,0.1);
+            border-color: var(--accent-green-light);
+            transform: translateY(-3px);
+            color: var(--text-light);
+        }
+        .btn-text {
+            color: var(--accent-green-bright);
+            padding: 0.5em 1em;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .btn-text:hover {
+            background: rgba(94,158,94,0.1);
+            color: var(--text-light);
+            transform: translateY(-2px);
+        }
+
+        /* ===== REVEAL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1), transform 0.9s cubic-bezier(0.4,0,0.2,1);
+            will-change: opacity, transform;
+        }
+        .reveal-up { transform: translateY(60px); }
+        .reveal-left { transform: translateX(-60px); }
+        .reveal-right { transform: translateX(60px); }
+        .reveal-zoom { transform: scale(0.8); }
+        .reveal.visible { opacity: 1; transform: translate(0,0) scale(1); }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 130px 24px 60px;
+        }
+
+        /* Animated grid background */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(94,158,94,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(94,158,94,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+            animation: gridDrift 25s ease-in-out infinite alternate;
+        }
+        @keyframes gridDrift {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(-30px, -20px); }
+        }
+
+        /* Floating orbs */
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            animation: orbFloat linear infinite;
+        }
+        .hero-orb-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(61,107,61,0.18), transparent 70%);
+            top: -100px; left: -200px;
+            animation-duration: 20s;
+        }
+        .hero-orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(94,158,94,0.12), transparent 70%);
+            bottom: -100px; right: -150px;
+            animation-duration: 27s;
+            animation-direction: reverse;
+        }
+        .hero-orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(126,207,126,0.08), transparent 70%);
+            top: 40%; left: 60%;
+            animation-duration: 18s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.97); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: var(--z-content);
+            width: 100%;
+            max-width: 980px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.4rem;
+            background: rgba(94,158,94,0.08);
+            border: 1px solid rgba(94,158,94,0.25);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-green-bright);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+            animation: badgePulse 3s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(94,158,94,0); }
+            50% { box-shadow: 0 0 0 6px rgba(94,158,94,0); }
+        }
+        .hero-badge .dot {
+            width: 6px; height: 6px;
+            background: var(--accent-green-bright);
+            border-radius: 50%;
+            animation: dotBlink 2s ease-in-out infinite;
+        }
+        @keyframes dotBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        .hero-logo-main {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            direction: ltr;
+            margin-bottom: 1.5rem;
+        }
+        .hero-logo-main img {
+            height: clamp(5rem, 16vw, 11rem);
+            margin-right: -16px;
+            filter: drop-shadow(0 0 30px rgba(94,158,94,0.3));
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+        .hero-logo-main span {
+            font-family: var(--font-logo);
+            font-size: clamp(5rem, 16vw, 11rem);
+            font-weight: 900;
+            line-height: 1;
+            background: var(--accent-metal-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .hero-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .hero-tagline {
+            font-size: clamp(1.2rem, 3vw, 1.7rem);
+            font-weight: 700;
+            color: var(--text-medium);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        .hero-tagline .highlight {
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-medium);
+            max-width: 640px;
+            margin: 0 auto 2.5rem;
+            line-height: 2;
+        }
+        .hero-cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0.5;
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+        .scroll-indicator span { font-size: 0.7rem; letter-spacing: 3px; color: var(--text-dim); }
+        .scroll-indicator i { color: var(--accent-green-light); font-size: 1rem; }
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+            50% { transform: translateX(-50%) translateY(8px); opacity: 0.7; }
+        }
+
+        /* ===== STATS STRIP ===== */
+        .stats-section {
+            padding: 1.5rem 0;
+            background: var(--secondary-dark);
+            border-top: 1px solid var(--border-green);
+            border-bottom: 1px solid var(--border-green);
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+        .stats-ticker {
+            display: flex;
+            gap: 4rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-icon {
+            font-size: 1.8rem;
+            color: var(--accent-green-medium);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); color: var(--accent-green-bright); }
+        }
+        .stat-text { font-size: 1rem; color: var(--text-light); font-weight: 700; }
+        .stat-text strong {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0 0.3rem;
+        }
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: var(--border-subtle);
+        }
+
+        /* ===== ABOUT ===== */
+        .about-section {
+            background: var(--secondary-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: -200px; right: -200px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(61,107,61,0.08), transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .about-text h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            color: var(--text-light);
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+        .about-lead {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            font-weight: 600;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+        .about-body { font-size: 1rem; line-height: 2; margin-bottom: 2rem; }
+        .about-details { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .about-details li {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-medium);
+        }
+        .about-details i { color: var(--accent-green-light); font-size: 1.2rem; width: 24px; text-align: center; }
+        .about-details strong { color: var(--text-light); }
+
+        /* Visual card */
+        .about-visual-wrap {
+            position: relative;
+        }
+        .about-visual-card {
+            background: linear-gradient(135deg, var(--tertiary-dark), var(--card-dark));
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .about-visual-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-green-light), transparent);
+        }
+        .about-visual-icon {
+            font-size: 8rem;
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 30px var(--glow-medium));
+            animation: iconRotate 8s ease-in-out infinite;
+        }
+        @keyframes iconRotate {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.05); }
+        }
+        .about-stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .mini-stat {
+            background: rgba(94,158,94,0.06);
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-md);
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .mini-stat .num {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+        }
+        .mini-stat .lbl {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== FEATURES ===== */
+        .features-section {
+            background: var(--primary-dark);
+            border-top: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            group: true;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(94,158,94,0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--border-green); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-card-top {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-green-medium), transparent);
+            transform: scaleX(0);
+            transition: transform var(--transition-normal);
+        }
+        .feature-card:hover .feature-card-top { transform: scaleX(1); }
+        .feature-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            transition: transform var(--transition-normal);
+            filter: drop-shadow(0 0 12px var(--glow-soft));
+        }
+        .feature-card:hover .feature-icon { transform: scale(1.25) rotate(-8deg); filter: drop-shadow(0 0 20px var(--glow-medium)); }
+        .feature-card h3 { font-size: 1.4rem; color: var(--text-light); font-weight: 700; margin-bottom: 0.8rem; }
+        .feature-card p { font-size: 0.95rem; color: var(--text-medium); line-height: 1.9; margin: 0; }
+
+        /* ===== PRICING ===== */
+        .pricing-section {
+            background: var(--secondary-dark);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .pricing-category-label {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .pricing-category-label h3 {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            font-weight: 800;
+            margin: 0;
+        }
+        .pricing-category-label .cat-tag {
+            font-family: var(--font-logo);
+            font-size: 1rem;
+            color: var(--text-dim);
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+        }
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        .other-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .pricing-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--border-green);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px var(--glow-soft);
+        }
+        .pricing-card.featured {
+            border-color: var(--accent-green-light);
+            background: linear-gradient(135deg, var(--card-dark), rgba(61,107,61,0.15));
+            box-shadow: 0 0 50px var(--glow-soft);
+            transform: scale(1.04);
+        }
+        .pricing-card.featured:hover { transform: scale(1.06) translateY(-12px); }
+        .pricing-badge {
+            position: absolute;
+            top: 1rem; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .pricing-card-icon { font-size: 2.2rem; color: var(--accent-green-medium); }
+        .pricing-big-num {
+            font-size: clamp(4rem, 10vw, 6.5rem);
+            font-weight: 900;
+            color: var(--text-light);
+            line-height: 1;
+        }
+        .pricing-label { font-size: 1.6rem; font-weight: 700; color: var(--text-medium); margin-top: -0.5rem; }
+        .pricing-bot-name { font-size: 1.6rem; font-weight: 800; color: var(--text-light); }
+        .pricing-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+        .pricing-price { font-size: 1.6rem; font-weight: 900; color: var(--accent-green-bright); }
+        .pricing-price .cur { font-size: 1rem; color: var(--text-dim); font-weight: 600; margin-right: 0.3rem; }
+        .pricing-price-note { font-size: 0.8rem; color: var(--text-dim); }
+
+        .pricing-extra-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            transition: all var(--transition-normal);
+        }
+        .pricing-extra-card:hover {
+            border-color: var(--border-green);
+            background: rgba(94,158,94,0.04);
+            transform: translateX(-4px);
+        }
+        .pricing-extra-card h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .pricing-extra-card h4 i { color: var(--accent-green-medium); }
+        .pricing-extra-price { font-size: 1.4rem; font-weight: 900; color: var(--accent-green-bright); }
+        .pricing-extra-price .cur { font-size: 0.9rem; color: var(--text-dim); margin-right: 0.3rem; }
+
+        /* ===== SERVICES ===== */
+        .services-section {
+            background: var(--primary-dark);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .service-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+        .service-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 100%, var(--glow-soft) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+        .service-card:hover { transform: translateY(-12px); border-color: var(--border-green); box-shadow: 0 25px 55px rgba(0,0,0,0.45); }
+        .service-card:hover::after { opacity: 1; }
+        .service-card > * { position: relative; z-index: 1; }
+        .service-num {
+            position: absolute;
+            top: 1rem; right: 1.5rem;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.025);
+            font-family: var(--font-logo);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .service-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            transition: transform var(--transition-normal);
+            filter: drop-shadow(0 0 12px var(--glow-soft));
+        }
+        .service-card:hover .service-icon { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 20px var(--glow-medium)); }
+        .service-card h3 { font-size: 1.5rem; color: var(--text-light); font-weight: 700; margin-bottom: 0.8rem; }
+        .service-card p { font-size: 0.95rem; color: var(--text-medium); line-height: 1.9; margin-bottom: 1.5rem; flex-grow: 1; }
+
+        /* ===== PROCESS ===== */
+        .process-section {
+            background: var(--secondary-dark);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            position: relative;
+        }
+        .process-grid::before {
+            content: '';
+            position: absolute;
+            top: 34px;
+            right: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-green) 20%, var(--border-green) 80%, transparent);
+        }
+        .process-step {
+            text-align: center;
+            padding-top: 90px;
+            position: relative;
+        }
+        .process-num {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 68px;
+            height: 68px;
+            background: var(--card-dark);
+            border: 2px solid var(--border-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--accent-green-light);
+            font-family: var(--font-logo);
+            transition: all var(--transition-normal);
+            z-index: 2;
+        }
+        .process-step:hover .process-num {
+            background: var(--accent-green-medium);
+            color: white;
+            border-color: var(--accent-green-bright);
+            box-shadow: 0 0 25px var(--glow-medium);
+            transform: translateX(-50%) scale(1.1);
+        }
+        .process-step h3 { font-size: 1.2rem; color: var(--text-light); font-weight: 700; margin-bottom: 0.6rem; }
+        .process-step p { font-size: 0.9rem; color: var(--text-medium); line-height: 1.9; }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            background: var(--primary-dark);
+            border-top: 1px solid var(--border-subtle);
+            overflow: hidden;
+        }
+        .testimonial-track {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 0 2rem;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+        .testimonial-track::-webkit-scrollbar { display: none; }
+        .testimonial-track:active { cursor: grabbing; }
+        .testimonial-card {
+            flex: 0 0 min(520px, 85vw);
+            scroll-snap-align: center;
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color var(--transition-normal);
+        }
+        .testimonial-card:hover { border-color: var(--border-green); }
+        .testimonial-card::before {
+            content: '\f10e';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 1rem; left: 1.5rem;
+            font-size: 5rem;
+            color: rgba(94,158,94,0.06);
+            line-height: 1;
+        }
+        .testimonial-stars { color: var(--accent-green-light); font-size: 0.9rem; margin-bottom: 1.2rem; letter-spacing: 2px; }
+        .testimonial-text { font-size: 1rem; color: rgba(255,255,255,0.8); line-height: 2; margin-bottom: 1.5rem; font-weight: 600; position: relative; z-index: 1; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-author img {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-green-medium);
+            background: var(--tertiary-dark);
+        }
+        .author-name { font-weight: 700; color: var(--text-light); font-size: 1rem; }
+        .author-role { font-size: 0.82rem; color: var(--text-dim); }
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+        .slider-btn {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-medium);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider-btn:hover {
+            background: var(--accent-green-medium);
+            color: white;
+            border-color: var(--accent-green-medium);
+        }
+
+        /* ===== FAQ ===== */
+        .faq-section {
+            background: var(--secondary-dark);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .faq-wrap { max-width: 860px; margin: 0 auto; }
+        .faq-item {
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .faq-item.active { border-color: var(--border-green); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.4rem 1.8rem;
+            cursor: pointer;
+            width: 100%;
+            text-align: right;
+            background: none;
+            border: none;
+            color: inherit;
+            font-family: inherit;
+        }
+        .faq-question h4 { font-size: 1.1rem; color: var(--text-light); font-weight: 700; margin: 0; transition: color var(--transition-fast); }
+        .faq-item.active .faq-question h4 { color: var(--accent-green-bright); }
+        .faq-icon {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: rgba(94,158,94,0.08);
+            border: 1px solid var(--border-green);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-right: 1rem;
+            font-size: 0.8rem;
+            color: var(--accent-green-light);
+            transition: transform var(--transition-normal), background var(--transition-fast);
+        }
+        .faq-item.active .faq-icon { transform: rotate(45deg); background: var(--accent-green-dark); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.6s ease; }
+        .faq-answer-inner {
+            padding: 0 1.8rem 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            margin: 0 1.8rem;
+        }
+        .faq-answer-inner p { margin-top: 1.2rem; margin-bottom: 0; font-size: 0.97rem; color: var(--text-medium); line-height: 2; }
+        .faq-item.active .faq-answer { max-height: 500px; }
+
+        /* ===== CTA SECTION ===== */
+        .cta-wrapper {
+            padding: 0 24px;
+            max-width: 1300px;
+            margin: 0 auto 5rem;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-green-dark) 0%, #1a3d1a 50%, var(--accent-green-medium) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius-xl);
+            padding: 5rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px var(--glow-soft);
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .cta-content { position: relative; z-index: 1; }
+        .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); color: white; font-weight: 900; margin-bottom: 1rem; }
+        .cta-section p { font-size: 1.05rem; color: rgba(255,255,255,0.85); max-width: 640px; margin: 0 auto 2.5rem; line-height: 2; font-weight: 600; }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 1rem 2.8rem;
+            background: white;
+            color: var(--accent-green-dark);
+            border-radius: var(--radius-md);
+            font-weight: 900;
+            font-size: 1.05rem;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .cta-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+            background: #f0fff0;
+            color: var(--accent-green-dark);
+        }
+
+        /* ===== FOOTER ===== */
+        .main-footer {
+            background: var(--secondary-dark);
+            border-top: 3px solid var(--accent-green-dark);
+            padding: 4rem 0 1.5rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .footer-logo-wrap {
+            display: flex;
+            align-items: baseline;
+            direction: ltr;
+            margin-bottom: 1rem;
+        }
+        .footer-logo-wrap img { height: 2.5rem; margin-right: -7px; }
+        .footer-logo-wrap span {
+            font-family: var(--font-logo);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--accent-metal-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .footer-about-text { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 1.5rem; }
+        .footer-social { display: flex; gap: 0.8rem; }
+        .social-link {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-dim);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+        }
+        .social-link:hover {
+            background: var(--accent-green-dark);
+            border-color: var(--accent-green-medium);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+        }
+        .footer-col h5 {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+        .footer-col ul a {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .footer-col ul a i { width: 16px; text-align: center; font-size: 0.85rem; }
+        .footer-col ul a:hover { color: var(--accent-green-light); padding-right: 0.3rem; }
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+        .footer-bottom p { font-size: 0.85rem; color: var(--text-dim); margin: 0; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(16px);
+            z-index: var(--z-modal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-normal), visibility var(--transition-normal);
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-box {
+            background: var(--secondary-dark);
+            border: 1px solid var(--border-green);
+            border-top: 3px solid var(--accent-green-medium);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            max-width: 680px;
+            width: 92%;
+            position: relative;
+            transform: translateY(-20px) scale(0.95);
+            opacity: 0;
+            transition: all var(--transition-normal);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-overlay.visible .modal-box { transform: none; opacity: 1; }
+        .modal-close {
+            position: absolute;
+            top: 1.2rem; left: 1.2rem;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--card-dark);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-medium);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all var(--transition-fast);
+        }
+        .modal-close:hover { background: #c0392b; color: white; border-color: #c0392b; transform: rotate(90deg); }
+        #modal-title { font-size: 1.6rem; color: var(--accent-green-bright); font-weight: 800; margin-bottom: 1.5rem; }
+        #modal-body p { font-size: 1rem; color: var(--text-medium); line-height: 2; margin-bottom: 1rem; }
+        #modal-body ul { list-style: none; padding: 0; }
+        #modal-body li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.97rem;
+            color: var(--text-medium);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+        #modal-body li:last-child { border-bottom: none; }
+        #modal-body li::before { content: '✓'; color: var(--accent-green-bright); font-weight: 900; flex-shrink: 0; margin-top: 0.1rem; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem; left: 2rem;
+            width: 48px; height: 48px;
+            background: var(--accent-green-dark);
+            border: 1px solid var(--accent-green-medium);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition-normal);
+            z-index: 90;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 6px 20px var(--glow-medium);
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: none; }
+        .back-to-top:hover { background: var(--accent-green-medium); transform: translateY(-4px) scale(1.1); }
+
+        /* ===== GLITCH EFFECT FOR HERO LOGO ===== */
+        @keyframes textGlitch {
+            0% { clip-path: none; transform: none; }
+            92% { clip-path: none; transform: none; }
+            93% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translate(-3px, 0); }
+            94% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(3px, 0); }
+            95% { clip-path: none; transform: none; }
+            100% { clip-path: none; transform: none; }
+        }
+
+        /* ===== FLOATING ELEMENTS DECORATION ===== */
+        .floating-icons {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .float-icon {
+            position: absolute;
+            font-size: 1.2rem;
+            color: rgba(94,158,94,0.15);
+            animation: floatAround linear infinite;
+        }
+        @keyframes floatAround {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ===== GRADIENT TEXT ===== */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .text-metal {
+            background: var(--accent-metal-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* ===== ANIMATED COUNTER ===== */
+        .counter { display: inline-block; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .music-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .main-nav { display: none; }
+            .mobile-nav-toggle { display: block; }
+            .cursor, .cursor-follower { display: none; }
+            .about-details { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .process-grid::before { display: none; }
+            .hero-section { padding-top: 100px; }
+            .about-stats-mini { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 576px) {
+            .section-padding { padding: 5rem 0; }
+            .hero-cta-buttons { flex-direction: column; align-items: center; }
+            .stats-ticker { flex-direction: column; gap: 1.5rem; }
+            .stat-divider { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- Particle Canvas -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+    <div class="loading-logo-wrap">
+        <img src="https://files.catbox.moe/jjkbjt.webp" alt="O">
+        <span>loma</span>
+    </div>
+    <div class="loading-bar-wrap">
+        <div class="loading-bar"></div>
+    </div>
+    <p class="loading-text">جاري تحميل الاستوديو ...</p>
+</div>
+
+<!-- Header -->
+<header class="main-header" id="main-header">
+    <div class="header-container">
+        <a href="#hero" class="header-logo">
+            <img src="https://files.catbox.moe/jjkbjt.webp" alt="O">
+            <span style="font-family:'Poppins',sans-serif;">loma</span>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#hero" class="nav-link active">الرئيسية</a></li>
+                <li><a href="#about" class="nav-link">عن الاستوديو</a></li>
+                <li><a href="#features" class="nav-link">المميزات</a></li>
+                <li><a href="#pricing" class="nav-link">الأسعار</a></li>
+                <li><a href="#services" class="nav-link">الخدمات</a></li>
+                <li><a href="#faq" class="nav-link">الأسئلة</a></li>
+                <li><a href="https://discord.gg/p8RZbT5tqg" target="_blank" rel="noopener" class="nav-link nav-cta"><i class="fab fa-discord"></i> انضم الآن</a></li>
+            </ul>
+        </nav>
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+<nav class="mobile-nav" id="mobile-nav">
+    <ul>
+        <li><a href="#hero" class="nav-link">الرئيسية</a></li>
+        <li><a href="#about" class="nav-link">عن الاستوديو</a></li>
+        <li><a href="#features" class="nav-link">المميزات</a></li>
+        <li><a href="#pricing" class="nav-link">الأسعار</a></li>
+        <li><a href="#services" class="nav-link">الخدمات</a></li>
+        <li><a href="#process" class="nav-link">خطوات العمل</a></li>
+        <li><a href="#faq" class="nav-link">الأسئلة</a></li>
+        <li><a href="https://discord.gg/p8RZbT5tqg" target="_blank" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center;text-decoration:none;"><i class="fab fa-discord"></i> انضم لديسكورد</a></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- HERO -->
+    <section class="hero-section" id="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+        <div class="floating-icons" id="floating-icons"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                أفضل متجر بوتات ديسكورد عربي
+            </div>
+
+            <div class="hero-logo-main">
+                <img src="https://files.catbox.moe/jjkbjt.webp" alt="loma Studio Logo">
+                <span style="font-family:'Poppins',sans-serif;">loma</span>
+            </div>
+
+            <h1 class="hero-title">ريادة الإبداع في عالم <span class="text-gradient">ديسكورد</span></h1>
+            <p class="hero-tagline">
+                <span class="highlight">افضل متجر بيع بوتات ديسكورد في الوطن العربي بأفضل جودة</span>
+            </p>
+            <p class="hero-subtitle">
+                نقدم لك تجربة استثنائية من خلال بوتات ذكية، إعدادات سيرفر احترافية، ودعم لا مثيل له. ارتقِ بمجتمعك الرقمي إلى آفاق جديدة معنا.
+            </p>
+            <div class="hero-cta-buttons">
+                <a href="https://discord.gg/p8RZbT5tqg" target="_blank" rel="noopener" class="btn btn-primary">
+                    <i class="fab fa-discord"></i> انضم لمجتمعنا الآن
+                </a>
+                <a href="#pricing" class="btn btn-secondary">
+                    تصفح أسعار البوتات <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section reveal reveal-up">
+        <div class="container">
+            <div class="stats-ticker">
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-check-double"></i></span>
+                    <span class="stat-text">
+                        أكثر من <strong><span class="counter" data-target="3200">0</span>+</strong> بوت مُسلَّم
+                    </span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-users"></i></span>
+                    <span class="stat-text">
+                        <strong>4+</strong> سنوات خبرة
+                    </span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-star"></i></span>
+                    <span class="stat-text">
+                        تقييم <strong>5/5</strong> من عملائنا
+                    </span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-bolt"></i></span>
+                    <span class="stat-text">
+                        دعم <strong>24/7</strong> متواصل
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about-section section-padding" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text reveal reveal-right" style="transition-delay:0.1s">
+                    <span class="section-label">من نحن</span>
+                    <h2>عن استوديو <span class="text-gradient">loma</span> وخبرة مُسْلِمْ</h2>
+                    <p class="about-lead">
+                        منذ انطلاقته في <strong>2024</strong>، يسعى استوديو loma ليكون المنارة الأولى لحلول ديسكورد المبتكرة والموثوقة في المنطقة العربية، بقيادة المبرمج والمؤسس <strong>مُسْلِمْ</strong>.
+                    </p>
+                    <p class="about-body">
+                        بخبرة تمتد لأكثر من <strong>4 سنوات</strong> في برمجة وتطوير ديسكورد، يجمع مُسْلِمْ بين الشغف بالتقنية والفهم العميق لاحتياجات المجتمعات الرقمية. نسعى لتقديم أدوات قوية وسهلة الاستخدام تمكنك من بناء وإدارة سيرفر أحلامك.
+                    </p>
+                    <ul class="about-details">
+                        <li><i class="fas fa-user-tie"></i> المؤسس: <strong>مُسْلِمْ</strong></li>
+                        <li><i class="fas fa-award"></i> الخبرة: <strong>4+ سنوات</strong></li>
+                        <li><i class="fas fa-calendar-alt"></i> التأسيس: <strong>2024</strong></li>
+                        <li><i class="fas fa-bullseye"></i> الرؤية: <strong>تمكين المجتمعات</strong></li>
+                    </ul>
+                </div>
+                <div class="about-visual-wrap reveal reveal-left" style="transition-delay:0.25s">
+                    <div class="about-visual-card">
+                        <div class="about-visual-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="about-stats-mini">
+                            <div class="mini-stat">
+                                <span class="num">3200+</span>
+                                <span class="lbl">بوت مُسلَّم</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="num">4+</span>
+                                <span class="lbl">سنوات خبرة</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="num">100%</span>
+                                <span class="lbl">رضا العملاء</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="num">24/7</span>
+                                <span class="lbl">دعم مستمر</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section section-padding" id="features">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">لماذا loma؟</span>
+                <h2>لماذا نحن خيارك <span class="text-gradient">الأمثل؟</span></h2>
+                <p>استوديو loma يقدم لك مزيجاً فريداً من الخبرة التقنية العميقة، الإبداع اللامحدود، والالتزام الراسخ بتقديم حلول رقمية تتجاوز توقعاتك.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal reveal-up" style="transition-delay:0.1s">
+                    <div class="feature-card-top"></div>
+                    <div class="feature-icon"><i class="fas fa-drafting-compass"></i></div>
+                    <h3>حلول مصممة خصيصاً</h3>
+                    <p>نبتكر كل مشروع بتفرد ليناسب بدقة متطلباتك الخاصة ورؤيتك المستقبلية لمجتمعك.</p>
+                </div>
+                <div class="feature-card reveal reveal-up" style="transition-delay:0.2s">
+                    <div class="feature-card-top"></div>
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>موثوقية وأمان لا هوادة فيه</h3>
+                    <p>نعتمد على أكواد برمجية متينة واستضافة فائقة الأمان لضمان استمرارية خدماتك وحمايتها.</p>
+                </div>
+                <div class="feature-card reveal reveal-up" style="transition-delay:0.3s">
+                    <div class="feature-card-top"></div>
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3>دعم فني استثنائي</h3>
+                    <p>فريق دعم متخصص وسريع الاستجابة، مستعد دائمًا لتقديم المساعدة والإجابة على استفساراتك.</p>
+                </div>
+                <div class="feature-card reveal reveal-up" style="transition-delay:0.4s">
+                    <div class="feature-card-top"></div>
+                    <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>ابتكار وتطوير مستمر</h3>
+                    <p>نواكب أحدث التقنيات والتوجهات في عالم ديسكورد لنقدم لك حلولًا مبتكرة ومتطورة دائمًا.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing-section section-padding" id="pricing">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">الأسعار</span>
+                <h2>أسعار تنافسية لبوتات <span class="text-gradient">مميزة</span></h2>
+                <p>نقدم لك باقات أسعار مرنة تناسب جميع الاحتياجات والميزانيات، مع الحفاظ على أعلى معايير الجودة.</p>
+            </div>
+
+            <!-- Music Bots -->
+            <div class="reveal reveal-up" style="transition-delay:0.1s">
+                <div class="pricing-category-label">
+                    <h3>بوتات ميوزك</h3>
+                    <span class="cat-tag" style="font-family:'Poppins',sans-serif;">Music Bots</span>
+                </div>
+            </div>
+            <div class="music-grid reveal reveal-up" style="transition-delay:0.15s">
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-music"></i></div>
+                    <div class="pricing-big-num">5</div>
+                    <div class="pricing-label">بوت</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>5<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                    <div class="pricing-price-note">لكل بوت بشكل مستقل</div>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">الأكثر شيوعاً ✦</div>
+                    <div class="pricing-card-icon"><i class="fas fa-headphones-alt"></i></div>
+                    <div class="pricing-big-num" style="margin-top:1.5rem">10</div>
+                    <div class="pricing-label">بوت</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>10<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                    <div class="pricing-price-note">خيار مثالي للسيرفرات المتوسطة</div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-record-vinyl"></i></div>
+                    <div class="pricing-big-num">20</div>
+                    <div class="pricing-label">بوت</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>20<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                    <div class="pricing-price-note">مناسب للسيرفرات الكبيرة</div>
+                </div>
+            </div>
+
+            <!-- Other Bots -->
+            <div class="reveal reveal-up" style="transition-delay:0.2s;margin-top:3rem">
+                <div class="pricing-category-label">
+                    <h3>بوتات متنوعة</h3>
+                </div>
+            </div>
+            <div class="other-grid reveal reveal-up" style="transition-delay:0.25s">
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="pricing-bot-name">بوت سيستم</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>18<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-gift"></i></div>
+                    <div class="pricing-bot-name">بوت جيفاواي</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>15<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-university"></i></div>
+                    <div class="pricing-bot-name">بوت بنك</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>15<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="pricing-bot-name">بوت بوست</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>12<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="pricing-bot-name">تاكس كريديت</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>10<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-icon"><i class="fas fa-comment-dots"></i></div>
+                    <div class="pricing-bot-name">بوت فيلنج</div>
+                    <div class="pricing-divider"></div>
+                    <div class="pricing-price"><span class="cur">بـ سعر</span>12<span style="font-size:1rem;color:var(--text-dim);margin-right:0.2rem;">ريال</span></div>
+                </div>
+            </div>
+
+            <div class="pricing-extra-card reveal reveal-up" style="transition-delay:0.3s;margin-top:1rem">
+                <h4><i class="fas fa-microphone-alt"></i> توب فويس</h4>
+                <div class="pricing-extra-price"><span class="cur">بـ سعر</span>15 ريال</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services-section section-padding" id="services">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">الخدمات</span>
+                <h2>خدماتنا المتكاملة <span class="text-gradient">لمجتمعك</span></h2>
+                <p>نوفر لك كل ما تحتاجه لتأسيس وإدارة مجتمع ديسكورد ناجح ومزدهر، من الألف إلى الياء.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal reveal-left" style="transition-delay:0.1s">
+                    <span class="service-num">01</span>
+                    <div class="service-icon"><i class="fas fa-robot"></i></div>
+                    <h3>تطوير بوتات مخصصة</h3>
+                    <p>نحول أفكارك إلى بوتات فعالة بميزات فريدة تلبي احتياجات مجتمعك بدقة متناهية.</p>
+                    <button class="btn btn-text learn-more-btn" data-service="bot-details">اعرف المزيد <i class="fas fa-angle-left"></i></button>
+                </div>
+                <div class="service-card reveal reveal-left" style="transition-delay:0.2s">
+                    <span class="service-num">02</span>
+                    <div class="service-icon"><i class="fas fa-server"></i></div>
+                    <h3>إعداد سيرفر احترافي</h3>
+                    <p>نقوم بتصميم وتنظيم سيرفرك بشكل احترافي وجذاب يشمل كافة الإعدادات اللازمة.</p>
+                    <button class="btn btn-text learn-more-btn" data-service="server-details">اعرف المزيد <i class="fas fa-angle-left"></i></button>
+                </div>
+                <div class="service-card reveal reveal-right" style="transition-delay:0.1s">
+                    <span class="service-num">03</span>
+                    <div class="service-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+                    <h3>استضافة بوتات آمنة</h3>
+                    <p>نوفر استضافة قوية ومستقرة على مدار الساعة لضمان عمل بوتاتك دون انقطاع.</p>
+                    <button class="btn btn-text learn-more-btn" data-service="hosting-details">اعرف المزيد <i class="fas fa-angle-left"></i></button>
+                </div>
+                <div class="service-card reveal reveal-right" style="transition-delay:0.2s">
+                    <span class="service-num">04</span>
+                    <div class="service-icon"><i class="fas fa-cogs"></i></div>
+                    <h3>حلول برمجية متقدمة</h3>
+                    <p>نطور أنظمة ولوحات تحكم مخصصة ونقوم بعمليات الربط البرمجي لتلبية متطلباتك الخاصة.</p>
+                    <button class="btn btn-text learn-more-btn" data-service="integration-details">اعرف المزيد <i class="fas fa-angle-left"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section-padding" id="process" style="background:var(--secondary-dark);border-top:1px solid var(--border-subtle)">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">آلية العمل</span>
+                <h2>كيف نعمل معك؟ خطوات <span class="text-gradient">بسيطة</span></h2>
+                <p>نتبع عملية واضحة ومنظمة لضمان تحقيق رؤيتك وتحويلها إلى واقع ملموس بأعلى جودة.</p>
+            </div>
+            <div class="process-grid reveal reveal-up" style="transition-delay:0.1s">
+                <div class="process-step">
+                    <div class="process-num">1</div>
+                    <h3>الاستشارة الأولية</h3>
+                    <p>نتفهم احتياجاتك وأهدافك بدقة ونقدم لك أفضل الحلول الممكنة.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-num">2</div>
+                    <h3>العرض والخطة</h3>
+                    <p>نقدم لك عرضًا تفصيليًا يشمل نطاق العمل، المدة الزمنية والتكلفة بوضوح تام.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-num">3</div>
+                    <h3>التطوير والتنفيذ</h3>
+                    <p>يعمل فريقنا بقيادة مُسْلِمْ على بناء مشروعك مع إطلاعك على آخر المستجدات.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-num">4</div>
+                    <h3>التسليم والدعم</h3>
+                    <p>نسلمك المشروع جاهزًا للاستخدام مع تقديم الدعم اللازم للإطلاق والمتابعة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section section-padding" id="testimonials">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">آراء العملاء</span>
+                <h2>ماذا يقول <span class="text-gradient">عملاؤنا؟</span></h2>
+                <p>آراء حقيقية من عملاء استفادوا من خدمات استوديو loma وانتقلوا بمجتمعاتهم لمستوى آخر.</p>
+            </div>
+            <div class="testimonial-track reveal reveal-up" id="testimonial-track" style="transition-delay:0.1s">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">خدمة ممتازة ومحترمة! مُسْلِمْ شخص محترف وسريع في التنفيذ. البوت الذي طورته لسيرفري تجاوز توقعاتي بكثير وأصبح المجتمع أكثر نشاطاً من قبل.</p>
+                    <div class="testimonial-author">
+                        <img src="https://files.catbox.moe/jjkbjt.webp" alt="عميل">
+                        <div>
+                            <div class="author-name">أحمد الشمري</div>
+                            <div class="author-role">مالك سيرفر ديسكورد</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">أسعار معقولة جداً مقارنة بالجودة العالية التي تحصل عليها. طلبت بوت ميوزك وتم التسليم خلال ساعات قليلة. أنصح الجميع بالتعامل مع loma Studio.</p>
+                    <div class="testimonial-author">
+                        <img src="https://files.catbox.moe/jjkbjt.webp" alt="عميل">
+                        <div>
+                            <div class="author-name">محمد العتيبي</div>
+                            <div class="author-role">مدير مجتمع ديسكورد</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">فريق متعاون جداً ويفهم ما تريد بالضبط. طلبت إعداد سيرفر كامل وكانت النتيجة احترافية ومنظمة. سأستمر في التعامل معهم مستقبلاً بكل تأكيد.</p>
+                    <div class="testimonial-author">
+                        <img src="https://files.catbox.moe/jjkbjt.webp" alt="عميل">
+                        <div>
+                            <div class="author-name">عبدالله القحطاني</div>
+                            <div class="author-role">مؤسس مجتمع تقني</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">الدعم الفني ممتاز وسريع الاستجابة. كلما واجهت مشكلة وجدت الحل فوراً. هذا هو المستوى الذي أتوقعه من متجر احترافي مثل loma Studio.</p>
+                    <div class="testimonial-author">
+                        <img src="https://files.catbox.moe/jjkbjt.webp" alt="عميل">
+                        <div>
+                            <div class="author-name">خالد الدوسري</div>
+                            <div class="author-role">مشرف سيرفر ترفيهي</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-controls reveal reveal-up" style="transition-delay:0.2s">
+                <button class="slider-btn" id="prev-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+                <button class="slider-btn" id="next-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section section-padding" id="faq">
+        <div class="container">
+            <div class="section-title reveal reveal-up">
+                <span class="section-label">الأسئلة الشائعة</span>
+                <h2>أسئلة <span class="text-gradient">يتكرر</span> طرحها</h2>
+                <p>نجيب على أبرز الأسئلة التي قد تدور في ذهنك حول خدماتنا ومنتجاتنا.</p>
+            </div>
+            <div class="faq-wrap reveal reveal-up" style="transition-delay:0.1s">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <h4>ما هي أنواع البوتات التي تقومون بتطويرها؟</h4>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>نقوم بتطوير كافة أنواع البوتات تقريبًا، بما في ذلك بوتات الإشراف، الألعاب، الموسيقى، التذاكر، التحقق، الاقتصاد، التكامل مع خدمات خارجية (API)، وغيرها الكثير حسب متطلبات العميل المحددة.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <h4>كم تستغرق عملية تطوير بوت مخصص؟</h4>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>تعتمد المدة على مدى تعقيد البوت والميزات المطلوبة. البوتات البسيطة قد تستغرق أيامًا قليلة، بينما قد تحتاج البوتات المعقدة إلى أسابيع. نحدد جدولًا زمنيًا واضحًا في عرض السعر بعد فهم المتطلبات.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <h4>هل تقدمون خدمة استضافة للبوتات التي أشتريها؟</h4>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>نعم، نقدم خدمة استضافة موثوقة وعالية الأداء تعمل على مدار الساعة لضمان بقاء بوتاتك متصلة بالإنترنت وجاهزة للعمل دائمًا. يمكنك اختيار باقة الاستضافة التي تناسبك.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <h4>ماذا لو واجهت مشكلة بعد الشراء؟</h4>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>نحن هنا لمساعدتك! نقدم دعمًا فنيًا متواصلاً بقيادة مُسْلِمْ. يمكنك التواصل معنا عبر سيرفر الديسكورد الخاص بنا، وسيقوم فريق الدعم بمساعدتك في حل أي مشكلة أو الإجابة على أي استفسار بسرعة.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <h4>هل الأسعار تشمل جميع الخدمات؟</h4>
+                        <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>الأسعار المعروضة خاصة بالبوتات الجاهزة. للبوتات المخصصة وخدمات إعداد السيرفر تُحدد الأسعار بعد الاستشارة وفهم المتطلبات بالكامل. تواصل معنا للحصول على عرض سعر خاص لمشروعك.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-wrapper">
+        <div class="cta-section reveal reveal-zoom" id="contact">
+            <div class="cta-content">
+                <span class="section-label" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.9)">ابدأ الآن</span>
+                <h2>جاهز لتبدأ مشروعك القادم معنا؟</h2>
+                <p>انضم الآن إلى مجتمع loma Studio النشط على ديسكورد! تواصل معنا مباشرة، ناقش أفكارك، احصل على الدعم، وكن جزءًا من مجتمع المبدعين.</p>
+                <a href="https://discord.gg/p8RZbT5tqg" target="_blank" rel="noopener" class="cta-btn">
+                    <i class="fab fa-discord"></i>
+                    انضم لسيرفر ديسكورد الآن!
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo-wrap">
+                    <img src="https://files.catbox.moe/jjkbjt.webp" alt="O">
+                    <span style="font-family:'Poppins',sans-serif;">loma</span>
+                </div>
+                <p class="footer-about-text">افضل متجر بيع بوتات ديسكورد في الوطن العربي. بإدارة المبرمج مُسْلِمْ بخبرة 4+ سنوات.</p>
+                <div class="footer-social">
+                    <a href="https://discord.gg/p8RZbT5tqg" target="_blank" rel="noopener" class="social-link" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>روابط سريعة</h5>
+                <ul>
+                    <li><a href="#hero"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> عن الاستوديو</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> المميزات</a></li>
+                    <li><a href="#pricing"><i class="fas fa-tag"></i> الأسعار</a></li>
+                    <li><a href="#services"><i class="fas fa-cogs"></i> الخدمات</a></li>
+                    <li><a href="#faq"><i class="fas fa-question-circle"></i> الأسئلة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>خدماتنا</h5>
+                <ul>
+                    <li><a href="#services"><i class="fas fa-robot"></i> بوتات مخصصة</a></li>
+                    <li><a href="#services"><i class="fas fa-server"></i> إعداد سيرفرات</a></li>
+                    <li><a href="#services"><i class="fas fa-cloud"></i> استضافة بوتات</a></li>
+                    <li><a href="#services"><i class="fas fa-code"></i> حلول برمجية</a></li>
+                    <li><a href="#process"><i class="fas fa-comments"></i> استشارة مجانية</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>سياسات</h5>
+                <ul>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> سياسة الخصوصية</a></li>
+                    <li><a href="#"><i class="fas fa-file-contract"></i> شروط الخدمة</a></li>
+                    <li><a href="#"><i class="fas fa-cookie-bite"></i> سياسة الكوكيز</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="current-year"></span> loma Studio | بإدارة وتطوير مُسْلِمْ. جميع الحقوق محفوظة.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Modal -->
+<div id="service-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" aria-label="إغلاق">×</button>
+        <h3 id="modal-title">تفاصيل الخدمة</h3>
+        <div id="modal-body"><p>جاري التحميل...</p></div>
+    </div>
+</div>
+
+<!-- Back to top -->
+<a href="#" class="back-to-top" id="back-to-top" aria-label="للأعلى">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<script>
+'use strict';
+
+// ===== PARTICLE SYSTEM =====
+(function() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animId;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticle() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            size: Math.random() * 1.5 + 0.5,
+            alpha: Math.random() * 0.4 + 0.1,
+            color: Math.random() > 0.5 ? '94,158,94' : '200,200,200'
+        };
+    }
+
+    function initParticles() {
+        particles = [];
+        const count = Math.min(Math.floor(canvas.width * canvas.height / 15000), 80);
+        for (let i = 0; i < count; i++) particles.push(createParticle());
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+            ctx.fill();
+        });
+
+        // Draw connections
+        particles.forEach((a, i) => {
+            particles.slice(i + 1).forEach(b => {
+                const dx = a.x - b.x, dy = a.y - b.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = `rgba(94,158,94,${0.06 * (1 - dist/120)})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            });
+        });
+
+        animId = requestAnimationFrame(drawParticles);
+    }
+
+    resize();
+    initParticles();
+    drawParticles();
+    window.addEventListener('resize', () => { resize(); initParticles(); });
+})();
+
+// ===== FLOATING ICONS =====
+(function() {
+    const wrap = document.getElementById('floating-icons');
+    if (!wrap) return;
+    const icons = ['fa-discord','fa-music','fa-robot','fa-code','fa-star','fa-bolt','fa-shield-alt'];
+    icons.forEach((ic, i) => {
+        const el = document.createElement('i');
+        el.className = `fas ${ic} float-icon`;
+        el.style.left = (10 + Math.random() * 80) + '%';
+        el.style.animationDuration = (15 + Math.random() * 20) + 's';
+        el.style.animationDelay = (i * -4) + 's';
+        el.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
+        wrap.appendChild(el);
+    });
+})();
+
+// ===== CURSOR =====
+(function() {
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    if (!cursor || !follower) return;
+    let mx = 0, my = 0, fx = 0, fy = 0;
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top = my + 'px';
+    });
+    function animFollower() {
+        fx += (mx - fx) * 0.12;
+        fy += (my - fy) * 0.12;
+        follower.style.left = fx + 'px';
+        follower.style.top = fy + 'px';
+        requestAnimationFrame(animFollower);
+    }
+    animFollower();
+    document.addEventListener('mousedown', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(0.6)';
+        follower.style.transform = 'translate(-50%,-50%) scale(1.5)';
+    });
+    document.addEventListener('mouseup', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+        follower.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+    document.querySelectorAll('a, button, .pricing-card, .feature-card, .service-card').forEach(el => {
+        el.addEventListener('mouseenter', () => { follower.style.width = '55px'; follower.style.height = '55px'; follower.style.opacity = '0.4'; });
+        el.addEventListener('mouseleave', () => { follower.style.width = '35px'; follower.style.height = '35px'; follower.style.opacity = '0.6'; });
+    });
+})();
+
+// ===== LOADING SCREEN =====
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const ls = document.getElementById('loading-screen');
+        if (ls) ls.classList.add('hidden');
+    }, 1800);
+});
+
+// ===== HEADER SCROLL =====
+(function() {
+    const header = document.getElementById('main-header');
+    if (!header) return;
+    function update() { header.classList.toggle('scrolled', window.scrollY > 60); }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+})();
+
+// ===== MOBILE NAV =====
+(function() {
+    const toggle = document.getElementById('mobile-nav-toggle');
+    const nav = document.getElementById('mobile-nav');
+    const overlay = document.getElementById('mobile-overlay');
+    if (!toggle || !nav) return;
+    let open = false;
+    function openNav() {
+        open = true;
+        nav.classList.add('active');
+        overlay && overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        toggle.innerHTML = '<i class="fas fa-times"></i>';
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+    function closeNav() {
+        open = false;
+        nav.classList.remove('active');
+        overlay && overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        toggle.innerHTML = '<i class="fas fa-bars"></i>';
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+    toggle.addEventListener('click', () => open ? closeNav() : openNav());
+    overlay && overlay.addEventListener('click', closeNav);
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) closeNav(); });
+})();
+
+// ===== SMOOTH SCROLL + NAV SPY =====
+(function() {
+    const header = document.getElementById('main-header');
+    const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    const sections = document.querySelectorAll('section[id], div[id="contact"]');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            const target = link.getAttribute('href');
+            const el = document.querySelector(target);
+            if (!el) return;
+            e.preventDefault();
+            const offset = target === '#hero' ? 0 : el.offsetTop - (header ? header.offsetHeight : 70);
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+        });
+    });
+
+    function updateSpy() {
+        const scrollY = window.scrollY + (header ? header.offsetHeight : 70) + 80;
+        let current = '';
+        sections.forEach(s => { if (scrollY >= s.offsetTop) current = s.id; });
+        navLinks.forEach(l => {
+            l.classList.remove('active');
+            if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+        });
+    }
+    window.addEventListener('scroll', updateSpy, { passive: true });
+    updateSpy();
+})();
+
+// ===== REVEAL ON SCROLL =====
+(function() {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    els.forEach(el => obs.observe(el));
+})();
+
+// ===== COUNTER ANIMATION =====
+(function() {
+    const counters = document.querySelectorAll('.counter[data-target]');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            const target = parseInt(el.dataset.target);
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = Math.floor(current).toLocaleString('ar');
+            }, 16);
+            obs.unobserve(el);
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(c => obs.observe(c));
+})();
+
+// ===== FAQ =====
+(function() {
+    document.querySelectorAll('.faq-item').forEach(item => {
+        const btn = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        if (!btn || !answer) return;
+        btn.addEventListener('click', () => {
+            const isOpen = item.classList.contains('active');
+            // close all
+            document.querySelectorAll('.faq-item.active').forEach(a => {
+                a.classList.remove('active');
+                a.querySelector('.faq-answer').style.maxHeight = null;
+                a.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+            });
+            if (!isOpen) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+})();
+
+// ===== MODAL =====
+(function() {
+    const overlay = document.getElementById('service-modal');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
+    const closeBtn = overlay ? overlay.querySelector('.modal-close') : null;
+
+    const data = {
+        'bot-details': {
+            title: 'تطوير بوتات ديسكورد المخصصة',
+            content: `<p>بناء بوتات فريدة باستخدام أحدث التقنيات مع التركيز على:</p><ul>
+                <li>الأداء العالي والكفاءة في المعالجة</li>
+                <li>قابلية التوسع لدعم نمو سيرفرك</li>
+                <li>ميزات متقدمة مع قواعد بيانات وربط APIs</li>
+                <li>أوامر slash commands وإعدادات سهلة</li>
+                <li>دعم وتحديثات مستمرة</li>
+            </ul>`
+        },
+        'server-details': {
+            title: 'إعداد السيرفر الاحترافي',
+            content: `<p>نصيغ بيئة الخادم بدقة متناهية، تشمل:</p><ul>
+                <li>هيكلة منطقية للقنوات والفئات</li>
+                <li>نظام أدوار وصلاحيات متكامل</li>
+                <li>أنظمة ترحيب وتحقق آلية</li>
+                <li>دمج وتكوين البوتات الأساسية</li>
+                <li>تحسينات جمالية وثيم خاص</li>
+            </ul>`
+        },
+        'hosting-details': {
+            title: 'استضافة البوتات الموثوقة',
+            content: `<p>استضافتنا تضمن بقاء بوتاتك فعالة 24/7:</p><ul>
+                <li>سيرفرات بوقت تشغيل 99.9% uptime</li>
+                <li>بيئة آمنة بجدران نارية حديثة</li>
+                <li>موارد قابلة للتطوير حسب الحاجة</li>
+                <li>نسخ احتياطية دورية تلقائية</li>
+                <li>مراقبة مستمرة وإشعارات فورية</li>
+            </ul>`
+        },
+        'integration-details': {
+            title: 'الحلول البرمجية المتكاملة',
+            content: `<p>توسيع إمكانيات ديسكورد وربطها بأنظمة خارجية:</p><ul>
+                <li>لوحات تحكم ويب مخصصة للإدارة</li>
+                <li>تطوير APIs للربط مع تطبيقات أخرى</li>
+                <li>أنظمة إدارة الفعاليات والعضويات</li>
+                <li>ربط بقواعد البيانات والخدمات السحابية</li>
+                <li>حلول برمجية مبتكرة حسب الطلب</li>
+            </ul>`
+        }
+    };
+
+    document.addEventListener('click', e => {
+        const btn = e.target.closest('.learn-more-btn');
+        if (!btn || !overlay) return;
+        const k = btn.dataset.service;
+        if (!data[k]) return;
+        title.textContent = data[k].title;
+        body.innerHTML = data[k].content;
+        overlay.classList.add('visible');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    });
+
+    function close() {
+        if (!overlay) return;
+        overlay.classList.remove('visible');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    closeBtn && closeBtn.addEventListener('click', close);
+    overlay && overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+// ===== TESTIMONIAL SLIDER =====
+(function() {
+    const track = document.getElementById('testimonial-track');
+    const prev = document.getElementById('prev-btn');
+    const next = document.getElementById('next-btn');
+    if (!track || !prev || !next) return;
+
+    let isDragging = false, startX = 0, scrollStart = 0;
+    track.addEventListener('mousedown', e => { isDragging = true; startX = e.pageX; scrollStart = track.scrollLeft; track.style.userSelect = 'none'; });
+    document.addEventListener('mousemove', e => { if (!isDragging) return; track.scrollLeft = scrollStart - (e.pageX - startX); });
+    document.addEventListener('mouseup', () => { isDragging = false; track.style.userSelect = ''; });
+
+    function getCardWidth() {
+        const card = track.querySelector('.testimonial-card');
+        return card ? card.offsetWidth + 24 : 300;
+    }
+    prev.addEventListener('click', () => { track.scrollBy({ left: getCardWidth(), behavior: 'smooth' }); });
+    next.addEventListener('click', () => { track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' }); });
+})();
+
+// ===== BACK TO TOP =====
+(function() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    window.addEventListener('scroll', () => btn.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    btn.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
+
+// ===== YEAR =====
+const yearEl = document.getElementById('current-year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// ===== HERO LOGO GLITCH =====
+(function() {
+    const logo = document.querySelector('.hero-logo-main span');
+    if (!logo) return;
+    setInterval(() => {
+        logo.style.animation = 'textGlitch 0.3s steps(1) forwards';
+        setTimeout(() => { logo.style.animation = ''; }, 300);
+    }, 6000);
+})();
+
+console.log('loma Studio v6.0 ✓');
+</script>
+</body>
+</html>
